@@ -1,7 +1,14 @@
-import './App.css'
-function App(){
-  return(
-      <h1>to do list</h1>
-  )
+import './App.css';
+import Header from './components/Header';
+import TodoListContainer from './components/TodoListContainer';
+
+function App() {
+  return (
+      <div>
+        <Header></Header>
+        <TodoListContainer></TodoListContainer>
+      </div>
+  );
 }
+
 export default App;
