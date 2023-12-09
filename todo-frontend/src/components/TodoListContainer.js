@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { addTodolist, getTodosByUser, updateTodolist } from '../services/todo.service';
+import CustomButton from './CustomButton';
 
 const TodoListContainer = () => {
     // Mock data
@@ -70,31 +71,36 @@ const TodoListContainer = () => {
 
     return (
         <div>
-            <input
-                type="text"
-                placeholder="Enter a new todo list name"
-                value={newTodoList}
-                onChange={handleInputTodoListChange}
-            />
-            <button onClick={handleAddTodoList}>Add Todo List</button>
-            <h2>Todo List</h2>
-            <ul>
-                {todos.map((todo) => (
-                    <React.Fragment key={todo._id}>
-                        <li>{todo.name}</li>
-                        <ul>
-                            {todo.todos.map((el, index) => <li key={index}>{el.task}</li>)}
-                        </ul>
-                        <input
-                            type="text"
-                            placeholder="Enter a new todo"
-                            value={newTodo}
-                            onChange={handleInputTodoChange}
-                        />
-                        <button onClick={() => handleAddTodo(todo._id)}>Add Todo</button>
-                    </React.Fragment>
-                ))}
-            </ul>
+            <div className='w-full py-[4rem] bg-gray-200'>
+                <input
+                    type="text"
+                    placeholder="Enter a new todo list"
+                    value={newTodoList}
+                    onChange={handleInputTodoListChange}
+                />
+                <CustomButton onClick={handleAddTodoList}>
+                    Add Todo List
+                </CustomButton>
+                <ul className='py-4 flex flex-col justify-center'>
+                    {todos.map((todo) => (
+                        <React.Fragment key={todo._id}>
+                            <li>{todo.name}</li>
+                            <ul>
+                                {todo.todos.map((el, index) => <li key={index}>{el.task}</li>)}
+                            </ul>
+                            <input
+                                type="text"
+                                placeholder="Enter a new task"
+                                value={newTodo}
+                                onChange={handleInputTodoChange}
+                            />
+                            <CustomButton onClick={() => handleAddTodo(todo._id)}>
+                                Add Task
+                            </CustomButton>
+                        </React.Fragment>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 };
