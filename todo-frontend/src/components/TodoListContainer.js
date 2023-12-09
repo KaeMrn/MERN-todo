@@ -91,7 +91,7 @@ const TodoListContainer = () => {
                     <div className='newList w-full border border-gray-300 m-3 px-2 sm:w-3/4 md:w-1/2 lg:w-1/2 rounded-lg shadow-xl h-12
         flex flex-row justify-between items-center gap-2'>
                         <input
-                            className="border h-10 p-2  rounded"
+                            className="border h-10 p-2 w-3/4  rounded"
                             type="text"
                             placeholder="Enter a new todo list"
                             value={newTodoList}
