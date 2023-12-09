@@ -77,7 +77,7 @@ const TodoListContainer = () => {
         // Mock add (no actual API call)
         // const newTodoListResponse = await addTodolist(null, { ...todoList })
 
-        setTodos([...todos, todoList]);
+        setTodos([todoList,...todos]);
         setNewTodoList('');
     };
 
