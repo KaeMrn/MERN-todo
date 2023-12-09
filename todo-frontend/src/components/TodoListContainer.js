@@ -80,6 +80,21 @@ const TodoListContainer = () => {
         setTodos([todoList,...todos]);
         setNewTodoList('');
     };
+    const handleTaskCheckboxChange = (todoId, taskIndex, isChecked) => {
+        setTodos(todos.map(todo => {
+            if (todo._id === todoId) {
+                const updatedTasks = todo.todos.map((task, index) => {
+                    if (index === taskIndex) {
+                        return { ...task, completed: isChecked };
+                    }
+                    return task;
+                });
+                return { ...todo, todos: updatedTasks };
+            }
+            return todo;
+        }));
+    };
+
 
     return (
         <div>
@@ -108,8 +123,14 @@ const TodoListContainer = () => {
                                 <h2 className='font-medium text-xl lg:text-2xl p-1'>{todo.name}</h2>
                                 <ul className='p-1 '>
                                     {todo.todos.map((el, index) =>
-                                        <li className='tasks flex items-center h-10 my-1 px-1 border border-gray-300 rounded-lg py-3'key={index}>
-                                            {el.task}
+                                        <li className='tasks flex items-center justify-between h-10 my-1 px-1 border border-gray-300 rounded-lg py-3'key={index}>
+                                            <span className="flex-grow">{el.task}</span>
+                                            <input className='m-2 form-checkbox text-pink-600'
+                                                   type='checkbox'
+                                                   checked={el.completed}
+                                                   onChange={(e) => handleTaskCheckboxChange(todo._id, index, e.target.checked)}
+                                            ></input>
+
                                         </li>)}
                                     <div className='AddNew h-12 flex flex-row justify-content items-center gap-2'>
                                         <input
