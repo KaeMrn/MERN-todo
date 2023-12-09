@@ -85,8 +85,11 @@ const TodoListContainer = () => {
         <div>
             <div className='w-full py-[4rem] bg-gray-200'>
 
+
                 <ul className='py-4 flex flex-col justify-center items-center'>
-                    <div className='newList h-12 flex flex-row justify-content items-center gap-2'>
+                    {/*centering the "add new lists input bar" and making the enitre div the same width as the task cards by using justify-between  */}
+                    <div className='newList w-full border border-gray-300 m-3 px-2 sm:w-3/4 md:w-1/2 lg:w-1/2 rounded-lg shadow-xl h-12
+        flex flex-row justify-between items-center gap-2'>
                         <input
                             className="border h-10 p-2  rounded"
                             type="text"
@@ -95,7 +98,7 @@ const TodoListContainer = () => {
                             onChange={handleInputTodoListChange}
                         />
                         <CustomButton onClick={handleAddTodoList}>
-                            Add Todo List
+                            Add List
                         </CustomButton>
                     </div>
                     {todos.map((todo) => (
