@@ -3,7 +3,7 @@ import { addTodolist, getTodosByUser, updateTodolist } from '../services/todo.se
 import CustomButton from './CustomButton';
 
 const TodoListContainer = () => {
-    // Mock data
+    // Mock data for testing
     const mockTodos = [
         {
             _id: '1',
@@ -26,11 +26,15 @@ const TodoListContainer = () => {
     ];
 
     const [todos, setTodos] = useState(mockTodos); // Initialize state with mock data
-    const [newTodo, setNewTodo] = useState('');
     const [newTodoList, setNewTodoList] = useState('');
+    const [todoInputs, setTodoInputs] = useState({});
 
-    const handleInputTodoChange = (event) => {
-        setNewTodo(event.target.value);
+
+    const handleInputTodoChange = (id, value) => {
+        setTodoInputs(prevInputs => ({
+            ...prevInputs,
+            [id]: value
+        }));
     };
 
     const handleInputTodoListChange = (event) => {
@@ -38,20 +42,28 @@ const TodoListContainer = () => {
     };
 
     const handleAddTodo = async (id) => {
+        const newTask = todoInputs[id];
+        if (!newTask) {
+            // Handle empty input or show an error message
+            return;
+        }
+
         const todoList = todos.find(todo => todo._id === id);
         const newTodoObject = {
             ...todoList,
             todos: [...todoList.todos, {
-                task: newTodo,
+                task: newTask,
                 completed: false
             }]
         };
 
-        // Mock update (no actual API call)
-        // await updateTodolist(null, { ...newTodoObject })
 
         setTodos([...todos.map(todo => todo._id === id ? newTodoObject : todo)]);
-        setNewTodo('');
+        // Clear the input field for this todo list
+        setTodoInputs(prevInputs => ({
+            ...prevInputs,
+            [id]: ''
+        }));
     };
 
     const handleAddTodoList = async () => {
@@ -72,31 +84,45 @@ const TodoListContainer = () => {
     return (
         <div>
             <div className='w-full py-[4rem] bg-gray-200'>
-                <input
-                    type="text"
-                    placeholder="Enter a new todo list"
-                    value={newTodoList}
-                    onChange={handleInputTodoListChange}
-                />
-                <CustomButton onClick={handleAddTodoList}>
-                    Add Todo List
-                </CustomButton>
-                <ul className='py-4 flex flex-col justify-center'>
+
+                <ul className='py-4 flex flex-col justify-center items-center'>
+                    <div className='newList h-12 flex flex-row justify-content items-center gap-2'>
+                        <input
+                            className="border h-10 p-2  rounded"
+                            type="text"
+                            placeholder="Enter a new todo list"
+                            value={newTodoList}
+                            onChange={handleInputTodoListChange}
+                        />
+                        <CustomButton onClick={handleAddTodoList}>
+                            Add Todo List
+                        </CustomButton>
+                    </div>
                     {todos.map((todo) => (
                         <React.Fragment key={todo._id}>
-                            <li>{todo.name}</li>
-                            <ul>
-                                {todo.todos.map((el, index) => <li key={index}>{el.task}</li>)}
-                            </ul>
-                            <input
-                                type="text"
-                                placeholder="Enter a new task"
-                                value={newTodo}
-                                onChange={handleInputTodoChange}
-                            />
-                            <CustomButton onClick={() => handleAddTodo(todo._id)}>
-                                Add Task
-                            </CustomButton>
+                            <li className='bg-white w-full border border-gray-300 p-3 m-3 sm:w-3/4 md:w-1/2 lg:w-1/2 rounded-lg shadow-xl hover:scale-105 duration-300' key={todo._id}>
+
+                                <h2 className='font-medium text-xl lg:text-2xl p-1'>{todo.name}</h2>
+                                <ul className='p-1 '>
+                                    {todo.todos.map((el, index) =>
+                                        <li className='tasks flex items-center h-10 my-1 px-1 border border-gray-300 rounded-lg py-3'key={index}>
+                                            {el.task}
+                                        </li>)}
+                                    <div className='AddNew h-12 flex flex-row justify-content items-center gap-2'>
+                                        <input
+                                            className="border h-10 p-2  w-3/4 rounded"
+                                            type="text"
+                                            placeholder="Enter a new task"
+                                            value={todoInputs[todo._id] || ''}
+                                            onChange={(e) => handleInputTodoChange(todo._id, e.target.value)}
+                                        />
+                                        <CustomButton onClick={() => handleAddTodo(todo._id)}>
+                                            Add Task
+                                        </CustomButton>
+                                    </div>
+                                </ul>
+
+                            </li>
                         </React.Fragment>
                     ))}
                 </ul>
