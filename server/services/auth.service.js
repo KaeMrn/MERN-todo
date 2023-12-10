@@ -3,8 +3,20 @@ const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 const authDao = require('../dao/auth.dao');
 const secret = 'kaemrn';
+const User = require('../user.model');
+
 
 const expiration = 60 * 60;
+
+const bcrypt = require('bcryptjs');
+
+async function signup(username, password) {
+    const hashedPassword = await bcrypt.hash(password, 10); // the '10' is the salt rounds
+    const newUser = new User({ username, password: hashedPassword });
+    await newUser.save();
+    return { username: newUser.username, userId: newUser._id };
+}
+
 
 const jwtOptions = {
     expiresIn: expiration // it lasts 1h
@@ -49,4 +61,4 @@ const checkAuthentication = (cookie) => {
     })
 }
 
-module.exports = {login, checkAuthentication};
+module.exports = {login, checkAuthentication, signup};

@@ -6,6 +6,20 @@ const expiration = 60 * 60;
 
 const cookieName = 'jwt';
 
+router.post('/signup', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const result = await authService.signup(username, password);
+
+        
+        res.json({ userId: result.userId, message: 'Signup successful' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
 router.post('/login', async (req, res) => {
 
     try {
