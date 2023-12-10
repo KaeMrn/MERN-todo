@@ -6,9 +6,13 @@ import CustomButton from "./CustomButton";
 const SignUp = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  // New state for tracking sign up success
+  const [isSignupSuccessful, setIsSignupSuccessful] = useState(false);
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsSignupSuccessful(false);
   
     try {
       const response = await fetch('http://localhost:3001/auth/signup', {
@@ -22,7 +26,7 @@ const SignUp = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('Signup successful:', data);
-        // Redirect or update UI accordingly
+        setIsSignupSuccessful(true);
       } else {
         console.error('Signup failed');
         // Handle errors (e.g., show error message)
@@ -65,9 +69,15 @@ const SignUp = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+        {/* Conditional rendering of success message or placeholder */}
+        <div className={isSignupSuccessful ? "text-center text-green-600" : "invisible"}>
+            {isSignupSuccessful ? "Sign Up Successful!" : "Placeholder"}
+          </div>
         <div className='mx-auto text-center mt-4'>
         <CustomButton type="submit">Sign Up</CustomButton>
         </div>
+
+        
 
       </form>
     </div>
