@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import CustomButton from "./CustomButton";
+import CustomButton from "../CustomButton";
+import signup from '../../assets/signup.png';
+
 
 
 
@@ -38,10 +40,13 @@ const SignUp = () => {
   
 
   return (
-    <div className='flex w-full min-h-screen bg-pink-200'>
-    <div className='bg-white w-full flex items-center justify-center lg:w-1/2 my-10'>
+    <div className='flex w-full h-screen bg-white '>
+    <div className='my-10 hidden lg:flex w-1/2 items-center justify-center '>
+        <img className='h-full' src={signup} alt = "signup picture"/>
+      </div>
+      <div className='bg-transparent w-full flex items-center justify-center lg:w-1/2 my-10 '>
       <form onSubmit={handleSubmit}
-      className='border p-10 rounded-3xl border-gray-200'>
+      className='border p-10 rounded-3xl bg-white border-gray-200'>
         <h2 className='text-3xl font-semibold pb-4'>Sign Up</h2>
         <div className='p-3'>
           <label className='text-md font-medium'
@@ -81,7 +86,11 @@ const SignUp = () => {
 
       </form>
     </div>
-    </div>
+      
+    </div> 
+
+
+
   );
 };
 
