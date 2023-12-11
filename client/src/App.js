@@ -12,12 +12,19 @@ function App() {
     setIsLoggedIn(status);
   };
 
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
+
   return (
-  <div>
-      <Header />
-      {isLoggedIn ? (
-        <TodoListContainer />
-      ) : (
+<div>
+      {isLoggedIn && (
+        <>
+          <Header onLogout={handleLogout} />
+          <TodoListContainer />
+        </>
+      )}
+      {!isLoggedIn && (
         <LogIn onLoginSuccess={handleLogin} />
       )}
     </div>
