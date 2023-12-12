@@ -185,7 +185,7 @@ const TodoListContainer = (props) => {
 
   return (
     <div>
-      <div className="w-full h-viewport py-[4rem] bg-gray-200">
+      <div className="w-full min-h-screen bg-gray-200">
         <ul className="py-4 px-3 flex flex-col justify-center items-center">
           {/*centering the "add new lists input bar" and making the enitre div the same width as the task cards by using justify-between  */}
           <div

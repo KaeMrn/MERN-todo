@@ -67,7 +67,7 @@ const LogIn = ({ onLoginSuccess }) => {
       <form onSubmit={handleSubmit}
       className='border p-10 rounded-3xl bg-white border-gray-200'>
         <h2 className='text-3xl font-semibold pb-4'>Login</h2>
-        <p>Don't have an account? <Link to="SignUp">Sign Up</Link></p>
+        <p>Don't have an account? <Link className='text-pink-500' to="SignUp">Sign Up</Link></p>
         <div className='p-3'>
           <label className='text-md font-medium'
           htmlFor="username">Username:</label>
