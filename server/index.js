@@ -6,8 +6,17 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
 
+// Using morgan middleware in 'dev' mode for logging
 app.use(morgan('dev'));
-app.use(cors());
+
+// Setting up CORS to accept requests from specified origin (localhost:3000)
+
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
+
+// Connecting to MongoDB using mongoose
 
 mongoose.connect('mongodb://127.0.0.1:27017/todo')  .then(() => {
   console.log('FINE');
@@ -15,6 +24,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/todo')  .then(() => {
 .catch(() => {
   console.log("BAD");
 });
+// Setting up mongoose connection and event handlers
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'error connecting with mongodb database:'));
@@ -31,16 +41,23 @@ db.on('disconnected', function () {
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+// Importing route handlers
 
 const auth = require('./routes/auth.route');
 const todo = require('./routes/todo.route');
+
+// Using body-parser middleware to parse JSON and URL-encoded data
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// Setting up routes with middleware
+
 app.use('/auth', auth.router);
-app.use('/todo', todo.router); // TODO: auth
+app.use('/todo', auth.checkAuthentication, todo.router); // TODO: auth
+
+// Middleware for handling not found (404) errors
 
 app.use((req, res, next) => {
   var err = new Error('Route not found');
@@ -65,6 +82,8 @@ app.use(function(err, req, res, next) {
   res.json({error});
   res.end();
 });
+
+// Starting the server on the specified PORT
 
 app.listen(PORT, ()=>console.log(`Server running on http://localhost:${PORT}/`));
 

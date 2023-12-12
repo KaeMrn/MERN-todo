@@ -1,36 +1,47 @@
 import React, { useState } from 'react';
 import CustomButton from "../CustomButton";
 import signin from '../../assets/signin.jpg';
+import {Link} from 'react-router-dom';
+import HeaderAll from '../HeaderAll';
 
 
 
 
+//accept a prop to be called upon successful login
 const LogIn = ({ onLoginSuccess }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   // New state for tracking sign in success
   const [isloginSuccessful, setIsloginSuccessful] = useState(false);
   
-
+//form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsloginSuccessful(false);; // Reset the success state on new submission
 
   
     try {
+      //send post request to the server
       const response = await fetch('http://localhost:3001/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ username, password }),
       });
   
       if (response.ok) {
         const data = await response.json();
         console.log('Sign-in successful:', data);
+        const userId = data.userId;
         setIsloginSuccessful(true);
-        onLoginSuccess(true);
+        setTimeout(() => {
+          onLoginSuccess(true);
+        }, 1000);
+/*         document.cookie = `userId=${userId}; path=/;`; // the server adds this
+ */
+
       } else {
         console.error('sign-in failed');
         // Handle errors 
@@ -42,7 +53,13 @@ const LogIn = ({ onLoginSuccess }) => {
   
 
   return (
-    <div className='flex w-full h-screen bg-white '>
+
+    <div className='h-screen flex flex-col overflow-hidden'>
+      <HeaderAll />
+
+    <div className='flex w-full h-screen bg-white flex-grow overflow-hidden'>
+    
+
     <div className='my-10 hidden lg:flex w-1/2 items-center justify-center '>
         <img className='h-full' src={signin} alt = "signin picture"/>
       </div>
@@ -50,6 +67,7 @@ const LogIn = ({ onLoginSuccess }) => {
       <form onSubmit={handleSubmit}
       className='border p-10 rounded-3xl bg-white border-gray-200'>
         <h2 className='text-3xl font-semibold pb-4'>Login</h2>
+        <p>Don't have an account? <Link to="SignUp">Sign Up</Link></p>
         <div className='p-3'>
           <label className='text-md font-medium'
           htmlFor="username">Username:</label>
@@ -89,7 +107,8 @@ const LogIn = ({ onLoginSuccess }) => {
       </form>
     </div>
       
-    </div> 
+    </div>
+     </div>
 
 
 

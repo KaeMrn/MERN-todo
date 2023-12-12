@@ -1,22 +1,26 @@
 import React, { useState } from 'react';
 import CustomButton from "../CustomButton";
 import signup from '../../assets/signup.png';
+import HeaderAll from '../HeaderAll';
 
 
 
 
 const SignUp = () => {
+
+  //hooks to manage inputs
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   // New state for tracking sign up success
   const [isSignupSuccessful, setIsSignupSuccessful] = useState(false);
   
-
+//form submission
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    setIsSignupSuccessful(false);
+    event.preventDefault();//(page reload prevention)
+    setIsSignupSuccessful(false);//reset signup upon success
   
     try {
+      //attemp sign in by sending post request to server
       const response = await fetch('http://localhost:3001/auth/signup', {
         method: 'POST',
         headers: {
@@ -34,13 +38,17 @@ const SignUp = () => {
         // Handle errors (e.g., show error message)
       }
     } catch (error) {
+            // Log any error during the signup process.
       console.error('Error during signup:', error);
     }
   };
   
 
   return (
-    <div className='flex w-full h-screen bg-white '>
+    <div className='h-screen flex flex-col overflow-hidden'>
+    <HeaderAll />
+
+    <div className='flex w-full h-screen bg-white flex-grow overflow-hidden '>
     <div className='my-10 hidden lg:flex w-1/2 items-center justify-center '>
         <img className='h-full' src={signup} alt = "signup picture"/>
       </div>
@@ -88,6 +96,7 @@ const SignUp = () => {
     </div>
       
     </div> 
+    </div>
 
 
 

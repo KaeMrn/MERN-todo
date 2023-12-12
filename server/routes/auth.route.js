@@ -4,16 +4,19 @@ const authService = require('../services/auth.service');
 const expiration = 60 * 60;
 
 
-const cookieName = 'jwt';
+const cookieName = 'jwt'; // Naming the cookie for JWT
 
 router.post('/signup', async (req, res) => {
     try {
         const { username, password } = req.body;
+        // Call the authService's signup function with provided credentials
         const result = await authService.signup(username, password);
 
         
         res.json({ userId: result.userId, message: 'Signup successful' });
     } catch (error) {
+                // Error handling
+
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
